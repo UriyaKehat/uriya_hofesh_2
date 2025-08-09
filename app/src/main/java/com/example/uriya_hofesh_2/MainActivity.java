@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn,btn2;
     Random random;
     EditText et;
-    ArrayList<String> inspirationalSentences;
+    ArrayList<String> inspirationalSentences = new ArrayList<>();
     SharedPreferences sharedPreferences;
     static final String PREF_NAME = "MyAppPrefs";
     static final String KEY_LAST_SENTENCE = "lastSentence";
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        inspirationalSentences = new ArrayList<>();
         inspirationalSentences.add("Believe in yourself and all that you are.");
         inspirationalSentences.add("Success is not final, failure is not fatal: It is the courage to continue that counts.");
         inspirationalSentences.add("Don't watch the clock; do what it does. Keep going.");
@@ -48,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         tv = findViewById(R.id.textView);
         btn = findViewById(R.id.button);
         btn2 = findViewById(R.id.button2);
-        inspirationalSentences = new ArrayList<String>();
-        random = new Random();
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String lastSentence = sharedPreferences.getString(KEY_LAST_SENTENCE, null);
         if (lastSentence != null) {
@@ -61,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (inspirationalSentences.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "No sentences available!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 int index = random.nextInt(inspirationalSentences.size());
                 String randomQuote = inspirationalSentences.get(index);
                 tv.setText(randomQuote);
